@@ -62,14 +62,23 @@ public class Movie {
         return movieId;
     }
 
+    public double getCharge(){
+        return price.getCharge();
+    }
+
     //calls prices get charge method
-    public int getCharge(int numberOfDays){
-        return price.getCharge(numberOfDays);
+    public double getCharge(int discount){
+        return price.getCharge(discount);
     }
 
     //calls prices get loyalt points earned method
-    public int getLoyaltyPointsEarned(int numberOfDays){
-        return price.getLoyaltyPointsEarned(numberOfDays);
+    //public int getLoyaltyPointsEarned(int numberOfDays){
+    //    return price.getLoyaltyPointsEarned(numberOfDays);
+    //}
+
+    //Returns LoyaltyPoints
+    public int getLoyaltyPoints(){
+        return price.getLoyaltyPoints();
     }
 
     public String getTitle() {

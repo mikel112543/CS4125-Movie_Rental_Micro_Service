@@ -53,7 +53,7 @@ public class RentalServiceImpl implements RentalService {
         if (customerTier == 1) {
             Rental rental = new Rental(movie, LocalDate.now().plusDays(4));
             userService.rentMovie(userId, rental);
-            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 4 days");
+            chainLogger.logMessage(AbstractLogger.OUTPUT_INFO, "User has rented the movie for 4 days"); //movie cost movie.getCharge(int tier), movie.getLoyaltyPointsEarned();
             return user.getRentedMovies();
         } else if (customerTier == 2) {
             Rental rental = new Rental(movie, LocalDate.now().plusDays(8));
