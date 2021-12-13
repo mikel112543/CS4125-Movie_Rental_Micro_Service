@@ -1,23 +1,28 @@
 package com.example.movierental.controller;
 
-import com.example.movierental.model.Rental;
 import com.example.movierental.service.RentalService;
-import com.example.movierental.service.UserService;
+import com.example.movierental.service.UserRepoServiceImpl;
+import com.example.movierental.states.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+/**
+ * Author - Michael Danaher
+ */
 @RestController
 public class RentalController {
 
-    @Autowired
     RentalService rentalService;
+    UserRepoServiceImpl userService;
 
     @Autowired
-    UserService userService;
+    public RentalController(RentalService rentalService, UserRepoServiceImpl userService) {
+        this.rentalService = rentalService;
+        this.userService = userService;
+    }
 
     /**
      * @param customerId - Customer ID wanting the rent the movie
@@ -27,10 +32,10 @@ public class RentalController {
 
     @PostMapping(value = "/customerId/{CUSTOMER_ID}/movieId/{MOVIE_ID}")
     public List<Rental> rentMovie(@PathVariable("CUSTOMER_ID") final String customerId,
-            @PathVariable("MOVIE_ID") final String movieId) {
+                                  @PathVariable("MOVIE_ID") final String movieId) {
 
-        int userId  = Integer.parseInt(customerId);
-        int filmId  = Integer.parseInt(movieId);
+        int userId = Integer.parseInt(customerId);
+        int filmId = Integer.parseInt(movieId);
 
         return rentalService.rentMovie(userId, filmId);
     }
@@ -44,7 +49,7 @@ public class RentalController {
     public List<Rental> showRentals(@PathVariable("CUSTOMER_ID") final String customerId) {
         int userId = Integer.parseInt(customerId);
 
-        return rentalService.listRentals(userId);
+        return rentalService.getRentals(userId);
     }
 
     /**
@@ -58,21 +63,17 @@ public class RentalController {
                             @PathVariable("MOVIE_ID") final int movieId) {
 
         return rentalService.getRental(customerId, movieId);
-        //Attach rental to model to be used in Thymeleaf
     }
 
     /**
      * @param customerId - the ID of the customer who owns the rental
-     * @param rentalId    - Unique identifier for the movie
+     * @param movieId    - Unique identifier for the movie
      * @return JSON Object
      */
-    @DeleteMapping(value = "/admin/removeRental/customer/{CUSTOMER_ID}/{RENTAL_ID}/")
-    public List<Rental> removeRentalView(@PathVariable("RENTAL_ID") final String rentalId,
-                                         @PathVariable("CUSTOMER_ID") final String customerId) {
-        int userId = Integer.parseInt(customerId);
-        int rentId = Integer.parseInt(rentalId);
+    @DeleteMapping(value = "/customerId/{CUSTOMER_ID}/removeRental/{MOVIE_ID}")
+    public String removeRental(@PathVariable("CUSTOMER_ID") final int customerId,
+                               @PathVariable("MOVIE_ID") final int movieId) {
 
-        return rentalService.removeRental(userId, rentId);
-
+        return rentalService.removeRental(customerId, movieId);
     }
 }

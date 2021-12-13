@@ -1,21 +1,21 @@
 package com.example.movierental.model;
 
 /**
- * standardReleasePrice Class
+ * StandardPrice Class
  * Author - Jack Murphy - 18254268
  */
-public class standardReleasePrice extends Price{
+public class StandardPrice extends Price{
 
     //movie cost 8 per day
     //customer earns 2 loyalty points per rental per day of a movie
-    public standardReleasePrice() {
+    public StandardPrice() {
         setPrice(8);
         setLoyaltyPoints(2);
     }
 
     @Override
     public String toString() {
-        return "standardReleasePrice{" +
+        return "StandardPrice{" +
                 "price=" + getPrice() +
                 ", loyaltyPoints=" + getLoyaltyPoints() +
                 '}';

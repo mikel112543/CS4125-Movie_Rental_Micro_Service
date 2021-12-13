@@ -7,6 +7,7 @@ package com.example.movierental.model;
  */
 public class PriceFactory {
 
+
     /**
      * priceCode dictates which Price subclass is returned
      * 0 = New Release
@@ -18,11 +19,11 @@ public class PriceFactory {
     public Price getPrice(int priceCode){
 
         if(priceCode == 0){
-            return new newReleasePrice();
+            return new NewPrice();
         } else if(priceCode == 1){
-            return new standardReleasePrice();
+            return new StandardPrice();
         }else if(priceCode == 2){
-            return new childrensReleasePrice();
+            return new ChildrensPrice();
         }else{
             System.out.println("Enter error checking here");
         }

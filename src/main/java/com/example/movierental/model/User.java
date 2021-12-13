@@ -1,17 +1,20 @@
 package com.example.movierental.model;
 
+import com.example.movierental.states.Rental;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.List;
+import java.util.*;
 
-/**
- * User Class
- * Author - Jack Murphy - 18254268
- */
-public class User {
+import static com.example.movierental.security.UserRole.ADMIN;
+import static com.example.movierental.security.UserRole.USER;
 
-    @JsonIgnore
+public class User implements UserDetails {
+
+/*    @JsonProperty
     private int userID;
 
     @JsonProperty("Username")
@@ -26,179 +29,130 @@ public class User {
     @JsonProperty("Loyalty Points")
     private int loyaltyPoints;
 
-    //Redundant?
     @JsonProperty("Tier")
     private int tier;
 
     @JsonIgnore
-    private List<Rental> rentedMovies;
+    private List<Rental> rentedMovies = new ArrayList<>();
 
-    @JsonProperty("Is Admin")
+    @JsonIgnore
     private boolean isAdmin;
 
+    @JsonProperty
+    private boolean isAccountNonLocked;
 
-    //Empty Constructor for User
-    public User() {
-    }
+    private Set<SimpleGrantedAuthority> authorities = new HashSet<>();*/
 
-    /**
-     * Full Parameterised Constructor for User
-     * @param userID
-     * @param username
-     * @param password
-     * @param banned
-     * @param loyaltyPoints
-     * @param tier
-     * @param rentedMovies
-     * @param isAdmin
-     */
-    public User(int userID, String username, String password, boolean banned, int loyaltyPoints, int tier, List<Rental> rentedMovies, boolean isAdmin) {
+    private int userID, loyaltyPoints;
+    private String username, password;
+    private boolean isAccountNonLocked, isEnabled;
+    private boolean isAdmin;
+    private int tier;
+    private List<Rental> rentedMovies = new ArrayList<>();
+    private Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+
+    public User(int userID, String username, String password, String authority, boolean banned) {
         this.userID = userID;
         this.username = username;
         this.password = password;
-        this.banned = banned;
-        this.loyaltyPoints = loyaltyPoints;
-        this.tier = tier;
-        this.rentedMovies = rentedMovies;
-        this.isAdmin = isAdmin;
+        isAccountNonLocked = !banned;
+        if (authority.equals("ROLE_USER")) {
+            authorities = USER.getGrantedAuthorities();
+        } else {
+            authorities = ADMIN.getGrantedAuthorities();
+        }
     }
 
-    /**
-     * Parameterised Constructor with two parameters
-     * @param userID
-     * @param username
-     */
-    public User(int userID, String username) {
-        this.userID = userID;
-        this.username = username;
-    }
-
-    /**
-     * Getter for userID
-     * @return userID
-     */
     public int getUserID() {
         return userID;
     }
 
-    /**
-     * Setter for userID
-     * @param userID
-     */
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-    /**
-     * Getter for userName
-     * @return String userName
-     */
+    @Override
     public String getUsername() {
         return username;
     }
 
-    /**
-     * Setter for userName
-     * @param username
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
-     * Getter for Password
-     * @return String password
-     */
+    @Override
     public String getPassword() {
         return password;
     }
 
-    /**
-     * Setter for Password
-     * @param password
-     */
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    /**
-     * Returns whether the User is banned or not as a boolean
-     * @return boolean banned
-     */
-    public boolean isBanned() {
-        return banned;
+    @Override
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
     }
 
-    /**
-     * Setter for Users banned value
-     * @param banned
-     */
-    public void setBanned(boolean banned) {
-        this.banned = banned;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    /**
-     * Gets the loyalty points a User has earned
-     * @return int loyaltyPoints
-     */
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
     public int getLoyaltyPoints() {
         return loyaltyPoints;
     }
 
-    /**
-     * Setter for loyalty points
-     * @param loyaltyPoints
-     */
-    public void setLoyaltyPoints(int loyaltyPoints) {
-        this.loyaltyPoints = loyaltyPoints;
-    }
-
-    //Redundant?
     public int getTier() {
         return tier;
     }
 
-    //Redundant?
-    public void setTier(int tier) {
-        this.tier = tier;
-    }
-
-    /**
-     * Returns list of Movies currently rented by User
-     * @return
-     */
     public List<Rental> getRentedMovies() {
         return rentedMovies;
     }
 
-    /**
-     * Setter for movies rented by a customer
-     * @param rentedMovies
-     */
-    public void setRentedMovies(List<Rental> rentedMovies) {
-        this.rentedMovies = rentedMovies;
-    }
-
-    /**
-     * Returns whether a User is an Admin or not
-     * @return boolean isAdmin
-     */
     public boolean isAdmin() {
         return isAdmin;
     }
 
-    /**
-     * Setter for admin status
-     * @param admin boolean
-     */
+    public void setAuthorities(Set<SimpleGrantedAuthority> grantedAuthorities) {
+        authorities = grantedAuthorities;
+    }
+
+    public void setLoyaltyPoints(int loyaltyPoints) {
+        this.loyaltyPoints = loyaltyPoints;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
+    }
+
+    public void setBanned(boolean banned) {
+        isAccountNonLocked = !banned;
+    }
+
+    public void setRentedMovies(List<Rental> rentedMovies) {
+        this.rentedMovies = rentedMovies;
+    }
+
     public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
 
-    /**
-     * Returns userId and username as a string
-     * @return String
-     */
+    public void stateCheck() {
+        int lp = this.getLoyaltyPoints();
+        if(lp > 500 && lp < 1500) {
+            this.setTier(2);
+        } else if (lp > 1500 && lp < 3000) {
+            this.setTier(3);
+        } else if (lp > 3000) {
+            this.setLoyaltyPoints(3000);
+        }
+    }
+
     @Override
     public String toString() {
         return "User{" +
