@@ -55,35 +55,6 @@ public abstract class Price {
         return getPrice();
     }
 
-    /**
-     * Calculates charge based on the type of movie and the users tier applied
-     * Tier 1 - No Discount
-     * Tier 2 - 10% Discount
-     * Tier 3 - 20% Discount
-     * @param tier
-     */
-    public double getCharge(int tier){
-        if(tier == 1){
-            return getPrice();
-        }else if(tier == 2){
-            double d = 0.9;
-            return getPrice()*(d);
-        }else if(tier >= 3){
-            double d = 0.8;
-            return getPrice()*(d);
-        }else{
-            return getPrice();
-        }
-    }
-
-    /**
-     * Calculates the loyalty points earned based on the type of movie the number of days and
-     * @param numberOfDays
-     * @return int loyalty points
-     */
-    public int getLoyaltyPointsEarned(int numberOfDays){
-        return getLoyaltyPoints()*numberOfDays;
-    }
 
     @Override
     public String toString() {

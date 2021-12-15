@@ -11,8 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class NewPrice extends Price{
-    //movie cost 10 per day
-    //customer earns 3 loyalty points per rental per day of a movie
+
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     public NewPrice(UserRepoServiceImpl userRepoService) {

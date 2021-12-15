@@ -47,7 +47,7 @@ class AdminControllerTest {
     MovieServiceImpl movieService;
 
 
-    @BeforeEach
+    /*@BeforeEach
     void setUp()  {
         User testUserUnbanned = new User(99, "test", "test", "ROLE_USER", false);
         User testUserBanned = new User(99, "test", "test", "ROLE_USER", true);
@@ -59,7 +59,7 @@ class AdminControllerTest {
         movieService.addMovie(movie2);
         userService.addUser(testUserUnbanned);
         userService.addUser(testUserBanned);
-    }
+    }*/
 
     @AfterEach
     void tearDown(){

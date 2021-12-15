@@ -31,13 +31,13 @@ class MovieControllerTest {
     MovieServiceImpl movieService;
 
 
-    @BeforeEach
+    /*@BeforeEach
     void setUp() {
         Movie movie1 = new Movie.MovieBuilder("The Dark Knight", "Action", "Batman and that", "2 hours", 99, "batmancoverphoto").setPrice(1).build();
         Movie movie2 = new Movie.MovieBuilder("The return of the king", "Action", "Lord of the Rings", "2 hours", 100, "lordoftheringscoverphoto").setPrice(1).build();
         movieService.addMovie(movie1);
         movieService.addMovie(movie2);
-    }
+    }*/
 
     @AfterEach
     void tearDown(){
